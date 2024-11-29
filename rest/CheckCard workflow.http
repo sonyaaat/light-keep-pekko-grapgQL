@@ -1,0 +1,54 @@
+POST localhost:8081/check-cards
+Content-Type: application/json
+
+> {% client.global.set("checkCardId", response.body.checkCardId ) %}
+
+###
+PUT localhost:8081/check-cards/{{checkCardId}}/title
+Content-Type: application/json
+
+{
+  "title": "foo42"
+}
+
+###
+// Delay to make the projections catch up
+GET https://hub.dummyapis.com/delay?seconds=10
+
+###
+GET localhost:8081/check-cards/{{checkCardId}}
+Content-Type: application/json
+
+###
+GET localhost:8081/check-cards
+Content-Type: application/json
+
+###
+POST localhost:8081/check-cards/{{checkCardId}}/items
+Content-Type: application/json
+
+> {% client.global.set("itemId", response.body.itemId ) %}
+
+###
+PUT localhost:8081/check-cards/{{checkCardId}}/items/{{itemId}}
+Content-Type: application/json
+
+{
+  "content": "foo42"
+}
+
+###
+PUT localhost:8081/check-cards/{{checkCardId}}/items/{{itemId}}/check
+Content-Type: application/json
+
+###
+PUT localhost:8081/check-cards/{{checkCardId}}/items/{{itemId}}/uncheck
+Content-Type: application/json
+
+####
+#DELETE localhost:8081/check-cards/{{checkCardId}}/items/{{itemId}}
+#Content-Type: application/json
+#
+####
+#DELETE localhost:8081/check-cards/{{checkCardId}}
+#Content-Type: application/json

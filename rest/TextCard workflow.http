@@ -1,0 +1,31 @@
+POST localhost:8081/text-cards
+Content-Type: application/json
+
+> {% client.global.set("textCardId", response.body.textCardId ) %}
+
+###
+PUT localhost:8081/text-cards/{{textCardId}}/title
+Content-Type: application/json
+
+{
+  "title": "foo42"
+}
+
+###
+PUT localhost:8081/text-cards/{{textCardId}}/content
+Content-Type: application/json
+
+{
+  "content": "bar42"
+}
+
+###
+// Delay to make the projections catch up
+GET https://hub.dummyapis.com/delay?seconds=10
+
+###
+GET localhost:8081/text-cards/{{textCardId}}
+Content-Type: application/json
+###
+GET localhost:8081/text-cards
+Content-Type: application/json
